@@ -32,8 +32,8 @@ class ContactRepositoryImpl : ContactRepository {
         _ = dataSource.updateContact(from: fromContact, to: toContact);
     }
     
-    func getContacts() -> Set<Contact> {
-        return dataSource.getContacts() as Set<Contact>;
+    func getContacts() -> [Contact] {
+        return dataSource.getContacts() as [Contact];
     }
 }
 

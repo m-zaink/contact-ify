@@ -16,5 +16,5 @@ protocol ContactRepository {
     func addContact(_: Contact);
     func removeContact(_: Contact);
     func updateContact(from: Contact, to: Contact);
-    func getContacts() -> Set<Contact>;
+    func getContacts() -> [Contact];
 }

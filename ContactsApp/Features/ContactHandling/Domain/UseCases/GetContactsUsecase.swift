@@ -9,13 +9,15 @@
 import Foundation
 
 class GetContactsUsecase : Usecase {
-    typealias ReturnType = Set<Contact>;
+    typealias ReturnType = [Contact];
     typealias Parameters = NoParameters;
+    
+    static var shared: GetContactsUsecase = GetContactsUsecase();
     
     private var _contactsRepository: ContactRepository = ContactRepositoryImpl.repository;
     
-    func execute(withParameters params: NoParameters) -> Set<Contact> {
-        let contacts: Set<Contact> = _contactsRepository.getContacts();
+    func execute(withParameters params: NoParameters) -> [Contact] {
+        let contacts: [Contact] = _contactsRepository.getContacts();
         return contacts;
     }
 }

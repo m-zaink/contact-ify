@@ -17,7 +17,7 @@ protocol ContactDataSource {
     func addContact(_ contact: CNMutableContact);
     func removeContact(_ contact: CNMutableContact);
     func updateContact(from fromContact: CNMutableContact, to toContact: CNMutableContact);
-    func getContacts() -> Set<ContactModel>;
+    func getContacts() -> [ContactModel];
 }
 
 class ContactDataSourceImpl : ContactDataSource {
@@ -84,7 +84,7 @@ class ContactDataSourceImpl : ContactDataSource {
     
     // Returns true upon successful updation of the passed contact
     // Otherwise returns false
-    func getContacts() -> Set<ContactModel> {
+    func getContacts() -> [ContactModel] {
         do {
             let keysToFetch = [
                 CNContactGivenNameKey,
@@ -113,16 +113,24 @@ class ContactDataSourceImpl : ContactDataSource {
                 return results
                 }();
             
-            var contacts: Set<ContactModel> = Set<ContactModel>();
+            var contacts: [ContactModel] = Array<ContactModel>();
             
             for contact in rawContacts {
-                contacts.insert(makeContactModel(fromRawContact: contact));
+                contacts.append(makeContactModel(fromRawContact: contact));
+            }
+            
+            contacts.sort { (a, b) -> Bool in
+                if a.firstName == b.firstName {
+                    return (a.lastName ?? "") < (b.lastName ?? "");
+                }
+                
+                return a.firstName < b.firstName;
             }
             
             return contacts;
         } catch {
             print(error);
-            return Set<ContactModel>();
+            return Array<ContactModel>();
         }
     }
 }
